@@ -45,8 +45,20 @@ find_bin() {
 	ssr) ret="/usr/bin/ssr-redir" ;;
 	ssr-local) ret="/usr/bin/ssr-local" ;;
 	ssr-server) ret="/usr/bin/ssr-server" ;;
-	v2ray) ret="/usr/bin/v2ray" ;;
-	trojan) ret="/usr/bin/trojan" ;;
+	v2ray)
+	if [ -f "/usr/bin/v2ray" ] ; then
+       ret="/usr/bin/v2ray"
+    else
+       ret="/tmp/v2ray"
+    fi
+    ;;
+	trojan)
+	if [ -f "/usr/bin/trojan" ] ; then
+       ret="/usr/bin/trojan"
+    else
+       ret="/tmp/trojan"
+    fi
+    ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
 	echo $ret
@@ -74,26 +86,25 @@ local type=$stype
 		tj_bin="/usr/bin/trojan"
 		if [ ! -f "$tj_bin" ]; then
 		if [ ! -f "/tmp/trojan" ];then
-			if [ trojan_local_enable = "1" ] && [ -s $trojan_local ] ; then
-            logger -t "SS" "trojan二进制文件复制成功"
-            cat $trojan_local > /tmp/trojan
-            chmod -R 777 /tmp/trojan
-            tj_bin="/tmp/trojan"
-else
-    curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 $trojan_link
-    if [ -s "/tmp/trojan" ] && [ `grep -c "404 Not Found" /tmp/trojan` == '0' ] ; then
-        logger -t "SS" "trojan二进制文件下载成功"
-        chmod -R 777 /tmp/trojan
-        tj_bin="/tmp/trojan"
-    else
-        logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
-        rm -f /tmp/trojan
-        nvram set ss_enable=0
-        ssp_close
-    fi
-fi
-
-			else
+			if [ $trojan_local_enable == "1" ] && [ -s $trojan_local ] ; then
+               logger -t "SS" "trojan二进制文件复制成功"
+               cat $trojan_local > /tmp/trojan
+               chmod -R 777 /tmp/trojan
+               tj_bin="/tmp/trojan"
+            else
+               curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 $trojan_link
+                 if [ -s "/tmp/trojan" ] && [ `grep -c "404 Not Found" /tmp/trojan` == '0' ] ; then
+                    logger -t "SS" "trojan二进制文件下载成功"
+                    chmod -R 777 /tmp/trojan
+                    tj_bin="/tmp/trojan"
+                else
+                    logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
+                    rm -f /tmp/trojan
+                    nvram set ss_enable=0
+                    ssp_close
+                fi
+            fi
+		else
 			tj_bin="/tmp/trojan"
 			fi		
 		fi
@@ -110,7 +121,7 @@ fi
 		v2_bin="/usr/bin/v2ray"
 		if [ ! -f "$v2_bin" ]; then
 		if [ ! -f "/tmp/v2ray" ];then
-			if [ v2_local_enable = "1" ] && [ -s $v2_local ] ; then
+			if [ $v2_local_enable == "1" ] && [ -s $v2_local ] ; then
             logger -t "SS" "v2ray二进制文件复制成功"
             cat $v2_local > /tmp/v2ray
             chmod -R 777 /tmp/v2ray
