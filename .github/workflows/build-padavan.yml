@@ -25,6 +25,7 @@ env:
   APPLY_RAINBOWTHEME: true
   Build_K2Tiny: false
   Build_JCG867M: false
+  Build_E8820S: false
   RECOVERY_SSPBINREMOTEDOWNLOAD: false
   BUILD_OWNER: vb1980
   UPLOAD_COWTRANSFER: true
@@ -74,6 +75,13 @@ jobs:
         cd $WORK_PATH/trunk
         sudo chmod +x ./JCG-AC876M_configs.tar.xz
         tar -xvf JCG-AC876M_configs.tar.xz
+    - name: Copy ZTE-E8820s configs
+      if: env.Build_E8820S == 'true'
+      run: |
+        cp -f e8820s/ZTE-E8820s_configs.tar.xz $WORK_PATH/trunk
+        cd $WORK_PATH/trunk
+        sudo chmod +x ./ZTE-E8820s_configs.tar.xz
+        tar -xvf ZTE-E8820s_configs.tar.xz
     - name: Recovery SSP bin files download from remote
       if: env.RECOVERY_SSPBINREMOTEDOWNLOAD == 'true'
       run: |
