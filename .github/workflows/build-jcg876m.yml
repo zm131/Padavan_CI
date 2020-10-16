@@ -1,4 +1,4 @@
-name: Build Padavan
+name: Build JCG876M
 
 on: 
   release:
