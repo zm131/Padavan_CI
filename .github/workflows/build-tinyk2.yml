@@ -1,4 +1,4 @@
-name: Build Padavan
+name: Build TinyK2
 
 on: 
   release:
