@@ -1,4 +1,4 @@
-name: Build Padavan
+name: Build ZTE8820S
 
 on: 
   release:
