@@ -60,7 +60,6 @@ jobs:
         tar -xvf mipsel-linux-uclibc.tar.xz -C toolchain-3.4.x
     - name: Reset golang dl url
       run: |
-        git clone --depth=1 $REPOSITORY_URL $WORK_PATH
         cd $WORK_PATH/trunk/tools
         sudo chmod +x ./Makefile
         sed -i "s#https://studygolang.com/dl/golang#https://golang.org/dl#g" ./Makefile
