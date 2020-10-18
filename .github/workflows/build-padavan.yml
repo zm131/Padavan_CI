@@ -1,6 +1,12 @@
 name: Build Padavan
 
-on: 
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Build_ChongshengB_Padavan'
+        required: true
+        default: 'build-openwrt'
   release:
     types: [published]
   push:
