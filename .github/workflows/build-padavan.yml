@@ -52,12 +52,6 @@ jobs:
         mkdir -p toolchain-3.4.x
         wget $TOOLCHAIN_URL
         tar -xvf mipsel-linux-uclibc.tar.xz -C toolchain-3.4.x
-    - name: Fix mt7615 5.0.4 driver conflict
-      run: |
-        cp -f wifi/5.0.4.0.tar.xz $WORK_PATH/trunk/proprietary/rt_wifi/rtpci
-        cd $WORK_PATH/trunk/proprietary/rt_wifi/rtpci
-        sudo chmod +x ./5.0.4.0.tar.xz
-        tar -xvf 5.0.4.0.tar.xz -C 5.0.4.0
     - name: Apply rainbow themes
       if: env.APPLY_RAINBOWTHEME == 'true'
       run: |
