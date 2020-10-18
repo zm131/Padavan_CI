@@ -52,6 +52,13 @@ jobs:
         mkdir -p toolchain-3.4.x
         wget $TOOLCHAIN_URL
         tar -xvf mipsel-linux-uclibc.tar.xz -C toolchain-3.4.x
+    - name: Reset golang dl url
+      run: |
+        git clone --depth=1 $REPOSITORY_URL $WORK_PATH
+        cd $WORK_PATH/trunk/tools
+        sudo chmod +x ./Makefile
+        sed -i "s#https://studygolang.com/dl/golang#https://golang.org/dl#g" ./Makefile
+        sed -i "s#go1.14.linux-amd64.tar.gz#go\$(go_version).linux-amd64.tar.gz#g" ./Makefile
     - name: Apply rainbow themes
       if: env.APPLY_RAINBOWTHEME == 'true'
       run: |
