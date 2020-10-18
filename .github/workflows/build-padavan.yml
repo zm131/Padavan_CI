@@ -6,7 +6,7 @@ on:
       name:
         description: 'Build_ChongshengB_Padavan'
         required: true
-        default: 'build-openwrt'
+        default: 'build'
   release:
     types: [published]
   push:
