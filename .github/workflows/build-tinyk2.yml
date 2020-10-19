@@ -126,62 +126,9 @@ jobs:
       run: |
         cd $WORK_PATH/trunk
         sudo ./clear_tree
-        sudo ./build_firmware_modify $t_item          # $t_item  是循环的子对象
+        sudo ./build_firmware_modify $TARGET_NAME 0          # $t_item  是循环的子对象
         sudo mv -f images/*.trx ${WORK_PATH}/images/
         done
         echo "::set-env name=FILE_NAME::$T_NAMES-$(date "+%Y%m%d")"  # 包名
         echo "::set-env name=IMAGES_PATH::${WORK_PATH}/images/"      # 打包目录
-    - name : Upload Packages           # 6. 打包文件并且上传到当前主分支
-      uses: actions/upload-artifact@master
-      if: env.UPLOAD_FIRMWARE == 'true' && success()   # 成功才执行
-      with:
-        name: Padavan-${{env.FILE_NAME}}
-        path: ${{ env.IMAGES_PATH }}
-    - name : Upload Packages           # 6. 打包文件并且上传到当前主分支
-      uses: actions/upload-artifact@master
-      if: env.UPLOAD_FIRMWARE == 'true' && success()   # 成功才执行
-      with:
-        name: Padavan-${{env.FILE_NAME}}
-        path: ${{ env.IMAGES_PATH }}
-    - name: Organize firmware files
-      id: organize
-      run: |
-        mkdir -p $FIRMWARE_PATH/
-        cd $WORK_PATH/trunk
-        rainbow_Prefix=""
-        if [ "${APPLY_RAINBOWTHEME}" = "true" ]
-        then
-        rainbow_Prefix="rainbow_"
-        fi
-        cd $WORK_PATH/trunk/images
-        for firmwarefile in $(ls *.trx)
-        do sudo mv $firmwarefile $FIRMWARE_PATH/${FIRMWARE_DATEPREFIX}"_"${FIRMWARE_AUTHOR}"_"${rainbow_Prefix}$firmwarefile
-        done
-        #mkdir -p $FIRMWARE_PATH/
-        #sudo mv -f $WORK_PATH/trunk/images/*.trx $FIRMWARE_PATH/
-        cd $FIRMWARE_PATH
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
-    - name : Upload packages
-      uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success'
-      with:
-        name: Padavan-packages
-        path: ${{ env.FIRMWARE }}
-    - name: Upload firmware to cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true'
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "DOWNLOADURL=$(cat cowtransfer.log | grep https)" >> $GITHUB_ENV
-    - name: Upload firmware to WeTransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true'
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-    - name: ServerChan Notification
-      if: steps.organize.outputs.status == 'success' && env.SERVERCHAN_NOTIFICATION == 'true'
-      run: |
-        curl -s "http://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=${TARGET_NAME}_Build_Completed" --data-urlencode "&desp=${DOWNLOADURL}"
+   
