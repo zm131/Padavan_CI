@@ -10,8 +10,8 @@ on:
   #    - master
 #  schedule:
 #    - cron: 0 8 * * 5
-  watch:
-    types: [started]
+#  watch:
+#    types: [started]
 env:
   REPOSITORY_URL: https://github.com/chongshengB/rt-n56u.git
   TOOLCHAIN_URL: https://github.com/hanwckf/padavan-toolchain/releases/download/v1.1/mipsel-linux-uclibc.tar.xz
