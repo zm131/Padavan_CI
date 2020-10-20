@@ -21,7 +21,7 @@ env:
   FIRMWARE_VERSION: 20201015
   #FIRMWARE_DATEPREFIX: $(date +"%Y%m%d")
   FIRMWARE_AUTHOR: chongshengB
-  FIRMWARE_PATH: /opt/firmwares
+  #FIRMWARE_PATH: /opt/firmwares
   APPLY_RAINBOWTHEME: true
   BUILD_OWNER: vb1980
   UPLOAD_COWTRANSFER: true
