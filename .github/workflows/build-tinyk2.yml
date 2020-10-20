@@ -122,7 +122,7 @@ jobs:
         sed -i "s/FIRMWARE_BUILDS_REV=.*/FIRMWARE_BUILDS_REV=${FIRMWARE_VERSION}/g" ./versions.inc
         echo '更新版本号时间'
         #########################################################################################
-   - name: Build firmware
+    - name: Build firmware
       run: |
         cd $WORK_PATH/trunk
         sudo ./clear_tree
