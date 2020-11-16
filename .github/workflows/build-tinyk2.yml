@@ -23,7 +23,7 @@ env:
   FIRMWARE_AUTHOR: chongshengB
   FIRMWARE_PATH: /opt/firmwares
   APPLY_RAINBOWTHEME: true
-  BUILD_OWNER: vb1980
+  BUILD_OWNER: love0849
   UPLOAD_COWTRANSFER: true
   UPLOAD_WETRANSFER: false
   SERVERCHAN_NOTIFICATION: true
@@ -60,6 +60,18 @@ jobs:
         mkdir -p n56u_rainbow
         tar -xvf rainbowthemes.tar.xz -C n56u_rainbow
         sed -i "s/WEBUI_NAME=n56u_ribbon_fixed/WEBUI_NAME=n56u_rainbow/g" ./Makefile
+    - name: Recovery SSP bin files download from remote
+      if: env.RECOVERY_SSPBINREMOTEDOWNLOAD == 'true'
+      run: |
+        cp -f ssp/shadowsocks.sh $WORK_PATH/trunk/user/shadowsocks/scripts
+        cp -f ssp/defaults.c $WORK_PATH/trunk/user/shared
+        cp -f ssp/variables.c $WORK_PATH//trunk/user/httpd
+        cp -f ssp/Shadowsocks.asp $WORK_PATH/trunk/user/www/n56u_ribbon_fixed
+        cd $WORK_PATH/trunk/user/shared
+        sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/trojan#https://cdn.jsdelivr.net/gh/${BUILD_OWNER}/Padavan_CI/ssp/trojan#g" ./defaults.c
+        sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/v2ray#https://cdn.jsdelivr.net/gh/${BUILD_OWNER}/Padavan_CI/ssp/v2ray#g" ./defaults.c
+        #cd $WORK_PATH/trunk/user/unblockmusic/scripts
+        #sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/unblockmusic/UnblockNeteaseMusic#https://cdn.jsdelivr.net/gh/${BUILD_OWNER}/Padavan_CI/unblockmusic/UnblockNeteaseMusic#g" ./unblockmusic.sh
     - name: Copy YK-L1Tiny config
       run: |
         cp -f tiny/YK-L1_tiny.config $WORK_PATH/trunk/configs/templates
